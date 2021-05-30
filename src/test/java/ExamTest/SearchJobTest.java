@@ -33,7 +33,7 @@ public class SearchJobTest {
 
         HomePage homePage = new HomePage(driver);
         homePage.searchJob();
-        JobPage page = new JobPag;
+        JobPage page = new JobPage(driver);
         homePage.waitForLoad();
         page.waitForLoad();
         Assert.assertNotNull(page.getButton(),"doesn't checked");
