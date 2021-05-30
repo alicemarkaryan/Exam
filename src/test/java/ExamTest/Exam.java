@@ -29,36 +29,34 @@ public class Exam {
         By jobCategoElem = By.xpath("//*[@id='jobsfilter-category']");
         WebElement jobCatego = wait.until(ExpectedConditions.elementToBeClickable(jobCategoElem));
         jobCatego.click();
-        By jobElem = By.xpath("//*[@id='jobsfilter-category']//child::option[4]");
+        By jobElem = By.xpath("//*[text()='Web/Graphic design']");
         WebElement job = wait.until(ExpectedConditions.elementToBeClickable(jobElem));
         job.click();
         By searchElem = By.xpath("//*[@class='fa fa-search']");
         WebElement search = driver.findElement(searchElem);
         search.click();
-        By countElem = By.xpath("//*[@data-count=text]");
-
-       WebElement count = wait.until(ExpectedConditions.visibilityOfElementLocated(countElem));
-        System.out.println(count.isSelected());
-        System.out.println(count.getText());
-        WebElement selected=driver.findElement(By.xpath("//input[@type='checkbox']"));
-//        if(selected.isSelected()){
-//            System.out.println(count.getText());
-//        }else {
-//            System.out.println("the job doesn't selected");
-//        }
-//        String countStr = count.getText();
-//        String countRep = countStr.replaceAll("[^0-9]", "");
-//        int countInt = Integer.parseInt(countRep);
-//        System.out.println(countInt);
+        By countElem = By.xpath("//*[text()='Web/Graphic design']/following-sibling::span");
+        WebElement count = wait.until(ExpectedConditions.visibilityOfElementLocated(countElem));
+        String countStr=count.getText().replaceAll("[^0-9]","");
+        int countInt=Integer.parseInt(countStr);
+        System.out.println(countInt);
+        WebElement button=driver.findElement(By.xpath("//input[@checked='checked']"));
+        Assert.assertNotNull(button.getAttribute("checked"));
         By allJobsElem = By.xpath("//*[@class='job_list_company_title']");
-        List<WebElement> allJobs = wait.until(ExpectedConditions.numberOfElementsToBeLessThan(allJobsElem, 50));
+
+        List<WebElement> allJobs = driver.findElements(allJobsElem);
         int elemCount = allJobs.size();
         System.out.println(elemCount);
-//        Assert.assertTrue(this.check(countInt, elemCount));
+        if(countInt >= 50){
+         Assert.assertEquals(allJobs.size(),50);
+        }
+        else
+        {
+            Assert.assertEquals(allJobs.size(),countInt);
+        }
+
         driver.quit();
     }
 
-    public boolean check(int a, int b) {
-        return a == b;
-    }
+
 }
