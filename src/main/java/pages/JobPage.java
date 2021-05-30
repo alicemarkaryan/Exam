@@ -14,7 +14,7 @@ public class JobPage {
     private String name="'Web/Graphic design'";
     private By jobCheckLoc = By.xpath("//*[text()="+name+"]/following-sibling::span");
     private By JobsLoc = By.xpath("//*[@class='job_list_company_title']");
-    private By checkLoc = By.xpath("//*[@checked='checked']");
+    private By checkLoc = By.xpath("//*[@id='jobsfilter-category']//*[text()="+name+" ]/preceding-sibling::input");
     private WebDriverWait wait ;
     public JobPage(WebDriver driver) {
         this.driver = driver;
@@ -23,6 +23,7 @@ public class JobPage {
     public String getButton() {
         WebElement button = driver.findElement(checkLoc);
         System.out.println(button.getAttribute("checked"));
+
         return button.getAttribute("checked");
     }
     public int getCount() {
