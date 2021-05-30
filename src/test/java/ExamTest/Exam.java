@@ -35,17 +35,26 @@ public class Exam {
         By searchElem = By.xpath("//*[@class='fa fa-search']");
         WebElement search = driver.findElement(searchElem);
         search.click();
-        By countElem = By.xpath("//*[@id='jobsfilter-category']//child::label[4]");
-        WebElement count = wait.until(ExpectedConditions.visibilityOfElementLocated(countElem));
-        String countStr = count.getText();
-        String countRep = countStr.replaceAll("[^0-9]", "");
-        int countInt = Integer.parseInt(countRep);
-        System.out.println(countInt);
+        By countElem = By.xpath("//*[@data-count=text]");
+
+       WebElement count = wait.until(ExpectedConditions.visibilityOfElementLocated(countElem));
+        System.out.println(count.isSelected());
+        System.out.println(count.getText());
+        WebElement selected=driver.findElement(By.xpath("//input[@type='checkbox']"));
+//        if(selected.isSelected()){
+//            System.out.println(count.getText());
+//        }else {
+//            System.out.println("the job doesn't selected");
+//        }
+//        String countStr = count.getText();
+//        String countRep = countStr.replaceAll("[^0-9]", "");
+//        int countInt = Integer.parseInt(countRep);
+//        System.out.println(countInt);
         By allJobsElem = By.xpath("//*[@class='job_list_company_title']");
         List<WebElement> allJobs = wait.until(ExpectedConditions.numberOfElementsToBeLessThan(allJobsElem, 50));
         int elemCount = allJobs.size();
         System.out.println(elemCount);
-        Assert.assertTrue(this.check(countInt, elemCount));
+//        Assert.assertTrue(this.check(countInt, elemCount));
         driver.quit();
     }
 
