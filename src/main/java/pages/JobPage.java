@@ -8,30 +8,46 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import java.util.List;
+import java.util.Random;
 
 public class JobPage {
-    private WebDriver driver;
-    private String name="'Web/Graphic design'";
-    private By jobCheckLoc = By.xpath("//*[text()="+name+"]/following-sibling::span");
-    private By JobsLoc = By.xpath("//*[@class='job_list_company_title']");
-    private By checkLoc = By.xpath("//*[@id='jobsfilter-category']//*[text()="+name+" ]/preceding-sibling::input");
-    private WebDriverWait wait ;
+    private final WebDriver driver;
+    private String jobCheckStr = "//*[text()='%s']/following-sibling::span";
+    private final By JobsLoc = By.xpath("//*[@class='job_list_company_title']");
+    private String checkLocStr = "//*[@id='jobsfilter-category']//*[text()='%s']/preceding-sibling::input";
+    private final WebDriverWait wait;
+    private final By randomJobLoc = By.xpath("//*[@class='job-inner job-item-title']");
+    private final By randomJobTitleLoc = By.xpath(".//*[@class='font_bold']");
+    private String jobTitleFirst;
+    private WebElement jobRandom;
+
     public JobPage(WebDriver driver) {
         this.driver = driver;
         wait = new WebDriverWait(driver, 20);
     }
-    public String getButton() {
-        WebElement button = driver.findElement(checkLoc);
-        System.out.println(button.getAttribute("checked"));
 
-        return button.getAttribute("checked");
+    private WebElement CheckCount(String jobCount) {
+        String job = String.format(jobCheckStr, jobCount);
+        return driver.findElement(By.xpath(job));
     }
-    public int getCount() {
-        WebElement jobCount = driver.findElement(jobCheckLoc);
-        String checkedStr = jobCount.getText().replaceAll("[^0-9]", "");
+
+    private WebElement CheckButton(String jobCheck) {
+        String button = String.format(checkLocStr, jobCheck);
+        return driver.findElement(By.xpath(button));
+    }
+
+    public String getButton(String jobCheck) {
+        System.out.println(CheckButton(jobCheck).getAttribute("checked"));
+        return CheckButton(jobCheck).getAttribute("checked");
+
+    }
+
+    public int getCount(String jobCount) {
+        String checkedStr = CheckCount(jobCount).getText().replaceAll("[^0-9]", "");
         System.out.println(Integer.parseInt(checkedStr));
         return Integer.parseInt(checkedStr);
     }
+
     public int getSize() {
         List<WebElement> JobList = driver.findElements(JobsLoc);
         System.out.println(JobList.size());
@@ -39,7 +55,28 @@ public class JobPage {
 
     }
 
-    public void waitForLoad(){
-        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(JobsLoc,10));
+    public void getTitleRandom() {
+
+        List<WebElement> randomJobElem = driver.findElements(randomJobLoc);
+        Random random = new Random();
+        int result = random.nextInt(randomJobElem.size());
+        jobRandom = randomJobElem.get(result);
+        WebElement jobRandomTitleElem = jobRandom.findElement(randomJobTitleLoc);
+        jobTitleFirst = jobRandomTitleElem.getText();
+        System.out.println(jobTitleFirst);
+
     }
+
+    public String jobTitleFirstName() {
+        return jobTitleFirst;
+    }
+
+    public void NextPage() {
+        jobRandom.click();
+    }
+
+    public void waitForLoad() {
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(randomJobLoc, 5));
+    }
+
 }
