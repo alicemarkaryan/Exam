@@ -15,6 +15,7 @@ public class SearchJobTest {
 
     WebDriver driver;
     private String jobName = "Web/Graphic design";
+    HomePage homePage;
 
     @BeforeSuite
 
@@ -27,16 +28,16 @@ public class SearchJobTest {
     public void BeforeClassMethod() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.get("https://staff.am");
+        homePage = new HomePage(driver).open();
+
     }
 
     @Test
     public void HomePage() {
 
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
         homePage.searchJob(jobName);
-        JobPage page = new JobPage(driver);
+        JobPage page = new JobPage(driver).open();
 
         homePage.waitForLoad();
         page.waitForLoad();
@@ -46,9 +47,9 @@ public class SearchJobTest {
         softAssert.assertEquals(page.getSize(), page.getCount(jobName), "jobs' counts don't match");
         page.NextPage();
         RandomJobPage randomJobPage = new RandomJobPage(driver);
-        String secondTitleName = randomJobPage.RandomJobSecondPageTitleMethod();
+        String secondTitleName = page.jobTitleFirstName();
         randomJobPage.waitForLoad();
-        softAssert.assertEquals(page.jobTitleFirstName(), secondTitleName, "names don't match");
+        softAssert.assertEquals(randomJobPage.RandomJobSecondPageTitleMethod(), secondTitleName, "names don't match");
         randomJobPage.languageChange();
         softAssert.assertEquals(secondTitleName, randomJobPage.checkTitleAfterChangeLanguage(), "Titles don't match");
         softAssert.assertAll();

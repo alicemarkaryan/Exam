@@ -17,9 +17,10 @@ public class RandomJobPage {
     private final By languageRus = By.xpath("//*[@id='w4']//li[1]");
 
     public RandomJobPage(WebDriver driver) {
-        this.driver = driver;
+       this.driver=driver;
         wait = new WebDriverWait(driver, 20);
     }
+
 
 
     public String RandomJobSecondPageTitleMethod() {

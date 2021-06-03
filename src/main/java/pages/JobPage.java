@@ -10,8 +10,8 @@ import org.testng.Assert;
 import java.util.List;
 import java.util.Random;
 
-public class JobPage {
-    private final WebDriver driver;
+public class JobPage extends BasePage{
+
     private String jobCheckStr = "//*[text()='%s']/following-sibling::span";
     private final By JobsLoc = By.xpath("//*[@class='job_list_company_title']");
     private String checkLocStr = "//*[@id='jobsfilter-category']//*[text()='%s']/preceding-sibling::input";
@@ -20,15 +20,21 @@ public class JobPage {
     private final By randomJobTitleLoc = By.xpath(".//*[@class='font_bold']");
     private String jobTitleFirst;
     private WebElement jobRandom;
+    private String url="/en/jobs";
 
     public JobPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         wait = new WebDriverWait(driver, 20);
     }
 
     private WebElement CheckCount(String jobCount) {
         String job = String.format(jobCheckStr, jobCount);
         return driver.findElement(By.xpath(job));
+    }
+
+    public JobPage open(){
+        driver.get(BASE_URL+url);
+        return this;
     }
 
     private WebElement CheckButton(String jobCheck) {

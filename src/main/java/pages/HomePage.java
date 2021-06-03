@@ -6,18 +6,24 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class HomePage {
+public class HomePage extends BasePage {
 
-    private final WebDriver driver;
+
     private final By searchLoc = By.xpath("//*[@id='jobsfilter-category']");
     private final By searchButtonLok = By.xpath("//*[@class='fa fa-search']");
     private final WebDriverWait wait;
     private String filterLoc = "//option[text()='%s']";
-
+    private String url="/";
     public HomePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         wait = new WebDriverWait(driver, 20);
     }
+
+    public HomePage open(){
+        driver.get(BASE_URL+url);
+        return this;
+    }
+
 
     private WebElement getFilterTetElement(String jobName) {
         String actualText = String.format(filterLoc, jobName);
