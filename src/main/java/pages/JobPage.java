@@ -37,14 +37,14 @@ public class JobPage extends BasePage{
         return this;
     }
 
-    private WebElement CheckButton(String jobCheck) {
+    private WebElement jobCheckedButton(String jobCheck) {
         String button = String.format(checkLocStr, jobCheck);
         return driver.findElement(By.xpath(button));
     }
 
     public String getButton(String jobCheck) {
-        System.out.println(CheckButton(jobCheck).getAttribute("checked"));
-        return CheckButton(jobCheck).getAttribute("checked");
+        System.out.println(jobCheckedButton(jobCheck).getAttribute("checked"));
+        return jobCheckedButton(jobCheck).getAttribute("checked");
 
     }
 
